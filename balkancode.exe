@@ -1,0 +1,29 @@
+import praw
+
+# Initialize the Reddit API connection
+reddit = praw.Reddit(
+    client_id="YOUR_CLIENT_ID",
+    client_secret="YOUR_CLIENT_SECRET",
+    username="YOUR_USERNAME",
+    password="YOUR_PASSWORD",
+    user_agent="YOUR_USER_AGENT",
+)
+
+# Set the subreddit and the message to be sent to unflaired users
+subreddit_name = "balkans_irl"
+message = "Dear unflaired cigan, please flair up so that GLORIOUS balkans can talk with you"
+
+# Monitor new posts and comments in the subreddit
+for submission in reddit.subreddit(subreddit_name).stream.comments(skip_existing=True):
+    # Check if the comment author has a user flair
+    if submission.author_flair_text is None:
+        # Send a reminder message to the user who submitted the comment
+        submission.author.message("Dear unflaired cigan, please flair up so that GLORIOUS balkans can talk with you", message)
+
+    # Check if the submission author has a user flair
+    submission = submission.submission
+    if submission.author_flair_text is None:
+        # Send a reminder message to the user who submitted the post
+        submission.author.message("Dear unflaired cigan, please flair up so that GLORIOUS balkans can talk with you", message)
+pip install pyinstaller
+pyinstaller --onefile bot.py
